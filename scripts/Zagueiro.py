@@ -54,31 +54,26 @@ if __name__=="__main__":
     
     while not rospy.is_shutdown():
         ssl_msg = SSL()
-        robot = robot2
+        robot = robot3
         car_x = robot.x
         car_y = robot.y
         velocidade = 0
         x = 0
         y = 0
-        dist_ballcar = math.sqrt((ballx - car_x) * (ballx - car_x) + (bally - car_y) * (bally - car_y))
+        dist_ball_gol = math.sqrt((-2000 - ballx) * (-2000 - ballx) + (0 - bally) * (0 - bally))
 
 
-        if  dist_ballcar > 500: # vai pra traz do carrinho
-            x = ballx - 500
+        if  dist_ball_gol > 1000: # vai pra traz do carrinho
+            x = ballx - 800
             y = bally 
-            velocidade = dist_ballcar
-            print("1")
+            velocidade = 0.5
+            print("Marcação")
         else:
             x = ballx 
             y = bally 
-            velocidade = 1
-            print("2")
-            if dist_ballcar < 100:
-                x = 2000
-                y = 0.300
-                velocidade = 2
-                print("3")
-
+            velocidade = 1          
+            print("Bote")
+            
 
 
         diff_x = x - car_x
