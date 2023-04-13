@@ -63,23 +63,17 @@ if __name__=="__main__":
         dist_ballcar = math.sqrt((ballx - car_x) * (ballx - car_x) + (bally - car_y) * (bally - car_y))
 
 
-        if  dist_ballcar > 500: # vai pra traz do carrinho
-            x = ballx - 500
+        if  dist_ballcar > 1000: # vai pra traz do carrinho
+            x = ballx - 1000
             y = bally 
             velocidade = dist_ballcar
             print("1")
         else:
+
             x = ballx 
             y = bally 
             velocidade = 1
             print("2")
-            if dist_ballcar < 100:
-                x = 2000
-                y = 0.300
-                velocidade = 2
-                print("3")
-
-
 
         diff_x = x - car_x
         diff_y = y - car_y # bally - car_y

@@ -45,7 +45,7 @@ def player_blue(data):
 
 
 if __name__=="__main__":
-    rospy.init_node("Atacante_3", anonymous=False)
+    rospy.init_node("Zagueiro", anonymous=False)
     
     rospy.Subscriber("/vision", SSL_DetectionFrame, player_blue)
     pub = rospy.Publisher('/robot_blue_3/cmd', SSL, queue_size=10)
@@ -61,13 +61,18 @@ if __name__=="__main__":
         x = 0
         y = 0
         dist_ball_gol = math.sqrt((-2000 - ballx) * (-2000 - ballx) + (0 - bally) * (0 - bally))
+        dist_car_gol = math.sqrt((-2000 - car_x) * (-2000 - car_x) + (0 - car_y) * (0 - car_y))
 
 
-        if  dist_ball_gol > 1000: # vai pra traz do carrinho
-            x = ballx - 800
-            y = bally 
-            velocidade = 0.5
-            print("Marcação")
+        if  dist_ball_gol > 800: # vai pra traz do carrinho
+            if car_x < 800:
+                velocidade = 0
+            else:
+                x = - 1800
+                y = 0
+                velocidade = 1
+                print("Marcação")
+            
         else:
             x = ballx 
             y = bally 
