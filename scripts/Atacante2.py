@@ -48,12 +48,14 @@ if __name__=="__main__":
     rospy.init_node("Atacante2", anonymous=False)
     
     rospy.Subscriber("/vision", SSL_DetectionFrame, player_blue)
-    pub = rospy.Publisher('/robot_blue_1/cmd', SSL, queue_size=10)
+    topic = rospy.get_param('Atacante2')
+    pub = rospy.Publisher(topic["Atacante2"], SSL, queue_size=10)
 
     r = rospy.Rate(10)
     
     while not rospy.is_shutdown():
         ssl_msg = SSL()
+        vel_max =0.5
         robot = robot2
         car_x = robot.x
         car_y = robot.y
@@ -70,13 +72,13 @@ if __name__=="__main__":
             else:
                 x = - 1300
                 y = 1100
-                velocidade = 1
+                velocidade = vel_max
                 print("Marcação")
             
         else:
             x = ballx 
             y = bally 
-            velocidade = 1          
+            velocidade = vel_max         
             print("Bote")
             
 

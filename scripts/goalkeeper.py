@@ -44,15 +44,18 @@ def player_blue(data):
     pelota = data.balls
 
 
-if __name__=="__main__":
+if __name__=="__main__" :
     rospy.init_node("Goleiro", anonymous=False)
     
     rospy.Subscriber("/vision", SSL_DetectionFrame, player_blue)
-    pub = rospy.Publisher('/robot_blue_4/cmd', SSL, queue_size=10)
+    topic = rospy.get_param('goalkeeper')
+    rospy.loginfo("Topic Name: %s, %s", topic, topic["goalkeeper"])
+    pub = rospy.Publisher(topic["goalkeeper"], SSL, queue_size=10)
 
     r = rospy.Rate(10)
     
     while not rospy.is_shutdown():
+        vel_max = 0.5
         ssl_msg = SSL()
         robot = robot4
         car_x = robot.x
@@ -70,13 +73,13 @@ if __name__=="__main__":
             else:
                 x = - 1800
                 y = 0
-                velocidade = 1
+                velocidade = vel_max
                 print("Marcação")
             
         else:
             x = ballx 
             y = bally 
-            velocidade = 1          
+            velocidade = vel_max          
             print("Bote")
             
 
@@ -99,6 +102,7 @@ if __name__=="__main__":
             ssl_msg.cmd_vel.linear.x =  velocidade
             ssl_msg.cmd_vel.angular.z =  (theta - robot.orientation) * 5
                     
+        print(ssl_msg)
         pub.publish(ssl_msg)
         posball()
 

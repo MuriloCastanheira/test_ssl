@@ -48,13 +48,17 @@ if __name__=="__main__":
     rospy.init_node("Atacante1", anonymous=False)
     
     rospy.Subscriber("/vision", SSL_DetectionFrame, player_blue)
-    pub = rospy.Publisher('/robot_blue_0/cmd', SSL, queue_size=10)
+    #print(rospy.get_param('Atacante1'))
+    #topic_name = rospy.get_param('Atacante1')
+    topic = rospy.get_param('Atacante1')
+    pub = rospy.Publisher(topic["Atacante1"], SSL, queue_size=10)
 
     r = rospy.Rate(10)
     
     while not rospy.is_shutdown():
         ssl_msg = SSL()
-        robot = robot0
+        vel_max =0.5
+        robot = robot2
         car_x = robot.x
         car_y = robot.y
         velocidade = 0
@@ -63,8 +67,26 @@ if __name__=="__main__":
         dist_ball_gol = math.sqrt((-2000 - ballx) * (-2000 - ballx) + (0 - bally) * (0 - bally))
         dist_car_gol = math.sqrt((-2000 - car_x) * (-2000 - car_x) + (0 - car_y) * (0 - car_y))
 
-        diff_x = ballx - car_x
-        diff_y = bally - car_y # bally - car_y
+
+        if  dist_ball_gol > 2000: # vai pra traz do carrinho
+            if dist_car_gol < 1300:
+                velocidade = 0
+            else:
+                x = - 1300
+                y = 1100
+                velocidade = vel_max
+                print("Marcação")
+            
+        else:
+            x = ballx 
+            y = bally 
+            velocidade = vel_max         
+            print("Bote")
+            
+
+
+        diff_x = x - car_x
+        diff_y = y - car_y # bally - car_y
 
         if diff_x!=0:
             theta = math.atan(diff_y/diff_x)
@@ -72,23 +94,16 @@ if __name__=="__main__":
             theta = 0 
 
         dist = math.sqrt(diff_x * diff_x + diff_y * diff_y)
-        err_orientation = theta - robot.orientation 
 
-        if dist < 100:
-            ssl_msg.cmd_vel.linear.x = 0
-            ssl_msg.cmd_vel.angular.z = 0
+        if car_x > x:
+            ssl_msg.cmd_vel.linear.x = - velocidade
+            ssl_msg.cmd_vel.angular.z = (theta - robot.orientation ) * 5
+
         else:
-            if diff_x > 0:
-                #ssl_msg.cmd_vel.linear.x =  1
-                ssl_msg.cmd_vel.angular.z = (theta - err_orientation ) * 5
-
-            else:
-               # ssl_msg.cmd_vel.linear.x = - 1
-                ssl_msg.cmd_vel.angular.z =  (theta - err_orientation) * 5
-                        
-        #
-        #pub.publish(ssl_msg)
-        print(ballx, bally)
+            ssl_msg.cmd_vel.linear.x =  velocidade
+            ssl_msg.cmd_vel.angular.z =  (theta - robot.orientation) * 5
+                    
+        pub.publish(ssl_msg)
         posball()
 
         r.sleep()

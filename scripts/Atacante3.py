@@ -48,31 +48,37 @@ if __name__=="__main__":
     rospy.init_node("Atacante_3", anonymous=False)
     
     rospy.Subscriber("/vision", SSL_DetectionFrame, player_blue)
-    pub = rospy.Publisher('/robot_blue_2/cmd', SSL, queue_size=10)
+    #print(rospy.get_param('Atacante3'))
+    #pub = rospy.Publisher(rospy.get_param('atacante3'), SSL, queue_size=10)
+    topic = rospy.get_param('Atacante3')
+    pub = rospy.Publisher(topic["Atacante3"], SSL, queue_size=10)
 
     r = rospy.Rate(10)
     
     while not rospy.is_shutdown():
+        vel_max =0.5
         ssl_msg = SSL()
         robot = robot2
         car_x = robot.x
         car_y = robot.y
+        #gol.x = 2000
+        #gol.y = 0.0
         velocidade = 0
         x = 0
         y = 0
         dist_ballcar = math.sqrt((ballx - car_x) * (ballx - car_x) + (bally - car_y) * (bally - car_y))
-
+        
 
         if  dist_ballcar > 1000: # vai pra traz do carrinho
             x = ballx - 1000
             y = bally 
-            velocidade = dist_ballcar
+            velocidade = vel_max
             print("1")
         else:
 
             x = ballx 
             y = bally 
-            velocidade = 1
+            velocidade = vel_max
             print("2")
 
         diff_x = x - car_x

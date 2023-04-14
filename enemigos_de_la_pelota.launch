@@ -1,0 +1,21 @@
+<launch>
+    <node pkg="test_ssl" name="goalkeeper" type="goalkeeper.py" args="goalkeeper_topic" >
+        <param name="goalkeeper" value="$(arg goalkeeper)"/>
+    </node>
+   
+        
+    <node pkg="test_ssl" name="Zagueiro" type="Zagueiro.py">
+        <param name="Zagueiro" value="$(arg Zagueiro)"/>
+    </node>
+    <node pkg="test_ssl" name="Atacante1" type="Atacante1.py" >
+        <param name="Atacante1" value="$(arg Atacante1)"/>
+    </node>
+    <node pkg="test_ssl" name="Atacante2" type="Atacante2.py" >
+        <param name="Atacante2" value="$(arg Atacante2)"/>
+    </node>
+    <node pkg="test_ssl" name="Atacante3" type="Atacante3.py" >
+        <param name="Atacante3" value="$(arg Atacante3)"/>
+    </node>    
+    
+</launch>
+
