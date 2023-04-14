@@ -19,3 +19,7 @@
     
 </launch>
 
+<!-- 
+    roslaunch test_ssl enemigos_de_la_pelota.launch goalkeeper:=/robot_blue_4/cmd_vel Zagueiro:=/robot_blue_3/cmd_vel Atacante1:=/robot_blue_0/cmd_vel Atacante2:=/robot_blue_1/cmd_vel Atacante3:=/robot_blue_2/cmd_vel
+-->
+
