@@ -1,3 +1,6 @@
+import random
+import time
+
 def shootout(publisher_name):
 	rand1 = random.randrange(10, 30, 1)
 	rand2 = random.randrange(-10, -30, 1)
@@ -18,5 +21,17 @@ def shootout(publisher_name):
     msg.cmd_vel.linear.x = 0.0
     msg.cmd_vel.angular.z = 0.0
     msg.kicker = False
+    publisher_name.publish(msg)
+    time.sleep(1)
+
+def Goleiro(publisher_name):
+    msg = SSL()
+    msg.cmd_vel.linear.y = 0.2
+    publisher_name.publish(msg)
+    time.sleep(1)
+    msg.cmd_vel.linear.y = -0.2
+    publisher_name.publish(msg)
+    time.sleep(2)
+    msg.cmd_vel.linear.y = 0.2
     publisher_name.publish(msg)
     time.sleep(1)
